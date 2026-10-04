@@ -1,0 +1,6 @@
+{
+  "name": "عقارات دسوق Ai",
+  "description": "تطبيق عقارات دسوق Ai لتصفح وبيع وتأجير العقارات والشقق والمنازل والمحلات والأراضي في مدينة دسوق بدعم الذكاء الاصطناعي",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

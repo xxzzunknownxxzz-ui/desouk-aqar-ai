@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحميل تطبيق عقارات دسوق - APK المباشر</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1E3A8A;
+      --primary-dark: #0F172A;
+      --gold: #D97706;
+      --gold-light: #FDE68A;
+      --accent: #2563EB;
+      --bg: #0F172A;
+      --card-bg: #1E293B;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --success: #10B981;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #090E1A 0%, #0F172A 50%, #1E293B 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      padding: 36px 28px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(37, 99, 235, 0.15);
+      text-align: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(217, 119, 6, 0.18);
+      border: 1px solid rgba(217, 119, 6, 0.4);
+      color: #FBBF24;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .logo-box {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, #2563EB, #1E3A8A);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    p.subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .download-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .file-meta {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .meta-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .meta-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      direction: ltr;
+    }
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+      color: #FFFFFF;
+      padding: 16px 24px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(217, 119, 6, 0.35);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .btn-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(217, 119, 6, 0.5);
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    }
+    .btn-download:active {
+      transform: translateY(1px);
+    }
+    .btn-alt {
+      margin-top: 12px;
+      display: inline-block;
+      color: #93C5FD;
+      font-size: 13px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .btn-alt:hover {
+      text-decoration: underline;
+    }
+    .steps {
+      text-align: right;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      padding: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .steps-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .steps ol {
+      padding-right: 20px;
+    }
+    .steps li {
+      margin-bottom: 6px;
+    }
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">✨ النسخة المحدثة جاهزة للتحميل</div>
+    
+    <div class="logo-box">
+      🏢
+    </div>
+
+    <h1>عقارات دسوق ومحافظة كفر الشيخ</h1>
+    <p class="subtitle">التطبيق الأقوى والأشمل للبحث عن الشقق، المحلات، العقارات، وفرص الإيجار والبيع في دسوق ومحافظة كفر الشيخ.</p>
+
+    <div class="download-card">
+      <div class="file-meta">
+        <div class="meta-item">
+          <span class="meta-label">اسم الملف</span>
+          <span class="meta-value">desouk-apartments.apk</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">حجم التطبيق</span>
+          <span class="meta-value">~47 MB</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">النوع</span>
+          <span class="meta-value">Android APK</span>
+        </div>
+      </div>
+
+      <a id="downloadBtn" href="/desouk-apartments.apk" download="desouk-apartments.apk" class="btn-download">
+        <span>📥 تحميل APK مباشرة الآن</span>
+      </a>
+
+      <div>
+        <a href="/app-debug.apk" download="app-debug.apk" class="btn-alt">رابط بديل لتحميل الملف (app-debug.apk)</a>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="steps-title">
+        <span>📱</span> خطوات التثبيت على هاتفك:
+      </div>
+      <ol>
+        <li>اضغط على زر <b>تحميل APK مباشرة الآن</b> بالأعلى.</li>
+        <li>بعد انتهاء التحميل، افتح الملف من شريط الإشعارات أو تطبيق "ملفاتي" (Downloads).</li>
+        <li>إذا ظهر لك تنبيه أمان، اضغط على <b>الإعدادات (Settings)</b> ثم فعّل <b>"السماح بالتثبيت من هذا المصدر"</b>.</li>
+        <li>اضغط <b>تثبيت (Install)</b> ثم افتح التطبيق واستمتع بتصفح عقارات دسوق!</li>
+      </ol>
+    </div>
+
+    <div class="footer">
+      نسخة أندرويد الرسمية المبنية لمنصة AI Studio
+    </div>
+  </div>
+</body>
+</html>

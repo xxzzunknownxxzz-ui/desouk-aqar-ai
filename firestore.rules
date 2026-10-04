@@ -1,0 +1,136 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // دوال التحقق من الهوية والصلاحيات (Authentication & Role Verification)
+    // ===============================================================
+
+    // التحقق من تسجيل دخول المستخدم
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // التحقق من امتلاك المستخدم دور 'Admin' ضمن مجموعة المستخدمين (Users collection)
+    // يدعم الفحص المباشر لمستند المستخدم في مجموعة /users/{uid} أو /Users/{uid}
+    function isAdmin() {
+      return isAuthenticated() && (
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['Admin', 'ADMIN', 'admin', 'SUPER_ADMIN']) ||
+        (exists(/databases/$(database)/documents/Users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/Users/$(request.auth.uid)).data.role in ['Admin', 'ADMIN', 'admin', 'SUPER_ADMIN']) ||
+        request.auth.token.role in ['Admin', 'ADMIN', 'admin', 'SUPER_ADMIN'] ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // ===============================================================
+    // مجموعة العقارات (properties collection)
+    // ===============================================================
+    match /properties/{propertyId} {
+      // السماح بالقراءة والتصفح لجميع المستخدمين والزوار
+      allow read: if true;
+
+      // العمليات الحساسة: الإضافة، التعديل، والحذف
+      // محظورة بالكامل إلا للمستخدمين الذين يمتلكون دور 'Admin' في مجموعة Users
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ===============================================================
+    // مجموعة المستخدمين (users / Users collection)
+    // ===============================================================
+    match /users/{userId} {
+      // يمكن للمستخدم قراءة ملفه الشخصي، وللأدمن قراءة ملفات جميع المستخدمين
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+
+      // إنشاء حساب مستخدم عادي (دون السماح للمستخدم بتعيين دور Admin لنفسه)
+      allow create: if isAuthenticated() && (
+        !('role' in request.resource.data) ||
+        request.resource.data.role != 'Admin' ||
+        isAdmin()
+      );
+
+      // تعديل بيانات المستخدم: مسموح للمستخدم بتعديل بياناته العامة،
+      // ولكن تعديل حقل 'role' أو الصلاحيات الحساسة محصور حصراً بالأدمن
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        (request.auth.uid == userId &&
+         (!('role' in request.resource.data) || request.resource.data.role == resource.data.role))
+      );
+
+      // حذف المستخدم مقيد بالأدمن فقط
+      allow delete: if isAdmin();
+    }
+
+    match /Users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuthenticated() && (
+        !('role' in request.resource.data) ||
+        request.resource.data.role != 'Admin' ||
+        isAdmin()
+      );
+      allow update: if isAuthenticated() && (
+        isAdmin() ||
+        (request.auth.uid == userId &&
+         (!('role' in request.resource.data) || request.resource.data.role == resource.data.role))
+      );
+      allow delete: if isAdmin();
+    }
+
+    // ===============================================================
+    // سجل العمليات الإدارية (admin_activity_logs)
+    // ===============================================================
+    match /admin_activity_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false; // حماية السجل من التعديل أو الحذف
+    }
+
+    // ===============================================================
+    // طلبات العملاء والاستفسارات
+    // ===============================================================
+    match /customer_requests/{requestId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /customer_inquiries/{inquiryId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ===============================================================
+    // إعدادات التطبيق
+    // ===============================================================
+    match /app_settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ===============================================================
+    // مصادر العقارات والمنشورات الخام والمراجعة السحابية (Admin Protected)
+    // ===============================================================
+    match /sources/{sourceId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /raw_posts/{postId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /imported_properties/{propertyId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /review_queue/{queueId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /import_logs/{logId} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false; // حماية سجل الاستيراد من التلاعب
+    }
+  }
+}
